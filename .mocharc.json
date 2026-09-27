@@ -1,6 +1,6 @@
 {
   "spec": [
-    "test/auth.test.js",
+    "test/external/loginAdmin.test.js",
     "test/external/alunos.external.test.js",
     "test/external/fluxoMatriculaDisciplina.test.js",
     "test/external/loginAluno.test.js",

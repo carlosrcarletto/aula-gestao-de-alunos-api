@@ -1,0 +1,23 @@
+[
+  {
+    "testTitle": "Deve efetuar login com o admin usando email e senha corretos",
+    "usarSenhaDoEnv": true,
+    "senhaDoLogin": null,
+    "statusCodeEsperado": 200,
+    "mensagemDeErroEsperada": null
+  },
+  {
+    "testTitle": "Não deve efetuar login com o admin quando a senha estiver incorreta",
+    "usarSenhaDoEnv": false,
+    "senhaDoLogin": "senha-incorreta",
+    "statusCodeEsperado": 401,
+    "mensagemDeErroEsperada": "E-mail ou senha inválidos."
+  },
+  {
+    "testTitle": "Não deve efetuar login com o admin quando a senha não for informada",
+    "usarSenhaDoEnv": false,
+    "senhaDoLogin": "",
+    "statusCodeEsperado": 400,
+    "mensagemDeErroEsperada": "Os campos \"email\" e \"senha\" são obrigatórios."
+  }
+]
