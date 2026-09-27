@@ -1,32 +1,24 @@
-import request from 'supertest';
-import { expect } from 'chai';
+import { expect } from "chai";
+import { api } from "../helpers/api.js";
+import { comTokenDeAdmin } from "../helpers/auth.js";
+import { novoAluno } from "../factories/alunosFactory.js";
 
-describe('Login', () => {
-    let token
-    beforeEach(async () => {
-        token = await getToken('admin@escola.com', 'admin123');
-    })
-    it('deve retornar 200 e um token quando o admin informar e-mail e senha corretos', async () => {
+describe("Cadastro de Aluno", () => {
+  it("deve retornar 201 quando o admin cadastrar um novo aluno", async () => {
+    // cadastrar o aluno
+    const aluno = novoAluno();
 
+    const cadastrarAlunoResposta = await api()
+      .post("/api/admin/alunos")
+      .set("Authorization", await comTokenDeAdmin())
+      .set("Accept", "application/json")
+      .send(aluno);
 
-        // cadastrar o aluno
-
-        const cadastrarAlunoResposta = await request('http://localhost:3000')
-            .post('/api/admin/alunos')
-            .set('Authorization', `Bearer ${token}`)
-            .set('Accept', 'application/json')
-            .send({
-                nome: 'Aluno Teste',
-                email: 'aluno.teste@teste.com',
-                matricula: '123456',
-                senha: 'senha123'
-            });
-        // validar que ele foi cadastrado
-
-        expect(cadastrarAlunoResposta.status).to.equal(201);
-        expect(cadastrarAlunoResposta.body.nome).to.equal('Aluno Teste')
-        expect(cadastrarAlunoResposta.body.email).to.equal('aluno.teste@teste.com')
-        expect(cadastrarAlunoResposta.body.matricula).to.equal('123456')
-
-    });
-})
+    // validar que ele foi cadastrado
+    expect(cadastrarAlunoResposta.status).to.equal(201);
+    expect(cadastrarAlunoResposta.body.nome).to.equal(aluno.nome);
+    expect(cadastrarAlunoResposta.body.email).to.equal(aluno.email);
+    expect(cadastrarAlunoResposta.body.matricula).to.equal(aluno.matricula);
+    expect(cadastrarAlunoResposta.body).to.not.have.property("senha");
+  });
+});

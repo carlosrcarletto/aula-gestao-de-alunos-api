@@ -1,0 +1,83 @@
+[
+  {
+    "testTitle": "Aluno registra entrega do trabalho - com título e descrição",
+    "dadosAluno": {
+      "nome": "Mariana Costa",
+      "email": "mariana.costa@example.com",
+      "matricula": "2025001",
+      "senha": "123456"
+    },
+    "dadosDisciplina": {
+      "nome": "Testes de API",
+      "codigo": "TAPI",
+      "cargaHoraria": 60
+    },
+    "matricularAluno": true,
+    "dadosTrabalho": {
+      "titulo": "Automação de testes com Mocha",
+      "descricao": "Suíte de testes com Mocha, Chai e SuperTest."
+    },
+    "statusCodeEsperado": 201,
+    "mensagemDeErroEsperada": null
+  },
+  {
+    "testTitle": "Aluno registra entrega do trabalho - informando apenas o título",
+    "dadosAluno": {
+      "nome": "Rafael Almeida",
+      "email": "rafael.almeida@example.com",
+      "matricula": "2025002",
+      "senha": "senha123"
+    },
+    "dadosDisciplina": {
+      "nome": "Integração Contínua",
+      "codigo": "CI",
+      "cargaHoraria": 40
+    },
+    "matricularAluno": true,
+    "dadosTrabalho": {
+      "titulo": "Pipeline no GitHub Actions"
+    },
+    "statusCodeEsperado": 201,
+    "mensagemDeErroEsperada": null
+  },
+  {
+    "testTitle": "Aluno registra entrega do trabalho - sem título deve ser recusada",
+    "dadosAluno": {
+      "nome": "Juliana Rocha",
+      "email": "juliana.rocha@example.com",
+      "matricula": "2025003",
+      "senha": "123456"
+    },
+    "dadosDisciplina": {
+      "nome": "Qualidade de Software",
+      "codigo": "QS",
+      "cargaHoraria": 60
+    },
+    "matricularAluno": true,
+    "dadosTrabalho": {
+      "descricao": "Trabalho enviado sem título."
+    },
+    "statusCodeEsperado": 400,
+    "mensagemDeErroEsperada": "Os campos \"disciplinaId\" e \"titulo\" são obrigatórios."
+  },
+  {
+    "testTitle": "Aluno registra entrega do trabalho - em disciplina sem matrícula deve ser recusada",
+    "dadosAluno": {
+      "nome": "Pedro Santos",
+      "email": "pedro.santos@example.com",
+      "matricula": "2025004",
+      "senha": "123456"
+    },
+    "dadosDisciplina": {
+      "nome": "Arquitetura de Software",
+      "codigo": "ARQ",
+      "cargaHoraria": 60
+    },
+    "matricularAluno": false,
+    "dadosTrabalho": {
+      "titulo": "Trabalho sem matrícula"
+    },
+    "statusCodeEsperado": 409,
+    "mensagemDeErroEsperada": "O aluno não está matriculado nesta disciplina."
+  }
+]

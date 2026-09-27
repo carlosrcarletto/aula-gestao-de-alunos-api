@@ -1,0 +1,11 @@
+{
+  "spec": [
+    "test/auth.test.js",
+    "test/external/alunos.external.test.js",
+    "test/external/fluxoMatriculaDisciplina.test.js",
+    "test/external/loginAluno.test.js",
+    "test/external/entregaTrabalho.test.js",
+    "test/**/*.test.js"
+  ],
+  "exit": true
+}
