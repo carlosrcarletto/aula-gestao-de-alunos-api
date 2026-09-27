@@ -2,38 +2,35 @@ import { api } from './api.js';
 import 'dotenv/config';
 
 
-let tokenEmCache = null;
-export async function comTokenDeAdmin() {
-    if (!tokenEmCache) {
-        tokenEmCache = await getToken(process.env.ADMIN_EMAIL, process.env.ADMIN_SENHA);
-    }
-    return `Bearer ${tokenEmCache}`;
-
-}
-
-// Faz login com as credenciais do aluno e devolve a resposta completa do login
-// (status, token e dados do usuário logado) para o teste poder validar quem logou
-export async function loginComoAluno(emailAluno, senhaAluno) {
+// Faz login na API e devolve a resposta completa (status, token e dados do usuário logado)
+async function login(email, senha) {
     return api()
         .post('/api/auth/login')
         .set('Accept', 'application/json')
         .send({
-            email: emailAluno,
-            senha: senhaAluno
+            email: email,
+            senha: senha
         });
 }
 
-export async function getToken(emailUser, passworUser) {
+// Login do Admin com o email e a senha do .env (Dotenv).
+// A senha pode ser trocada para testar cenários de erro, como senha incorreta.
+export async function loginComoAdmin(senhaAdmin = process.env.ADMIN_SENHA) {
+    return login(process.env.ADMIN_EMAIL, senhaAdmin);
+}
 
-    const loginResposta = await api()
-        .post('/api/auth/login')
-        .set('Accept', 'application/json')
-        .send({
-            email: emailUser,
-            senha: passworUser
+// Login do Aluno (Usuário) com as credenciais usadas no cadastro feito pelo admin
+export async function loginComoAluno(emailAluno, senhaAluno) {
+    return login(emailAluno, senhaAluno);
+}
 
-        });
-
-    return loginResposta.body.token;
+// Header Authorization do admin, reaproveitando o token entre os testes
+let tokenEmCache = null;
+export async function comTokenDeAdmin() {
+    if (!tokenEmCache) {
+        const loginResposta = await loginComoAdmin();
+        tokenEmCache = loginResposta.body.token;
+    }
+    return `Bearer ${tokenEmCache}`;
 
 }
