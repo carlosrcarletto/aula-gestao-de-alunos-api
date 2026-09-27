@@ -111,6 +111,65 @@ Na primeira execução com o banco vazio, a API popula automaticamente as coleç
 dados fake descrito em [Dados fake pré-carregados](#dados-fake-pré-carregados). Em execuções
 seguintes, os dados já existentes são preservados.
 
+## Testes automatizados
+
+Os testes de API usam **Mocha**, **Chai** e **SuperTest**, com **Data-Driven Testing**: os cenários
+de cada teste ficam em arquivos JSON em `test/fixtures/`, e cada item do arquivo vira um caso de
+teste.
+
+### Configuração (Dotenv)
+
+As credenciais do admin e a URL da API são lidas de um arquivo `.env` (que não vai para o
+repositório). Copie o modelo e preencha os valores:
+
+```bash
+cp .env.example .env
+```
+
+| Variável      | Descrição                                   |
+| ------------- | ------------------------------------------- |
+| `ADMIN_EMAIL` | E-mail do administrador usado nos testes    |
+| `ADMIN_SENHA` | Senha do administrador usado nos testes     |
+| `BASE_URL`    | URL da API (ex.: `http://localhost:3000`)   |
+
+### Executando
+
+Os testes chamam a API pela `BASE_URL`, então o servidor precisa estar no ar:
+
+```bash
+# terminal 1: subir a API
+npm start
+
+# terminal 2: rodar os testes
+npm test
+```
+
+A ordem de execução dos arquivos está definida em `.mocharc.json`:
+
+1. Login do Admin
+2. Cadastro de Aluno
+3. Matrícula de Aluno em Disciplina
+4. Login do Aluno cadastrado pelo Admin
+5. Entrega de Trabalho pelo Aluno
+
+### Estrutura
+
+```
+test/
+├── external/   # testes de API (chamadas HTTP para a BASE_URL)
+├── internal/   # testes com a aplicação em memória (ex.: erro 500 simulado com Sinon)
+├── fixtures/   # dados dos testes em JSON (Data-Driven Testing)
+├── factories/  # geração de dados aleatórios com Faker
+└── helpers/    # api(), login do Admin e do Aluno, dados únicos por execução
+```
+
+### Pipeline (GitHub Actions)
+
+O workflow `.github/workflows/tests.yml` roda a cada push e em pull requests para a `main`: sobe um
+MongoDB, inicia a API em segundo plano e executa `npm test`. As credenciais do admin podem ser
+configuradas nos secrets `ADMIN_EMAIL` e `ADMIN_SENHA` do repositório; sem eles, é usado o admin
+padrão dos dados fake.
+
 ## Documentação da API (Swagger)
 
 A documentação completa de todas as rotas, parâmetros, corpos de requisição e respostas está

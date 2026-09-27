@@ -3,7 +3,7 @@
     "testTitle": "Validar que um aluno foi cadastrado com sucesso",
     "dadosAluno": {
       "nome": "carlos rodrigues carletto",
-      "email": "carlosrcarletto@exemple.com",
+      "email": "carlosrcarletto@example.com",
       "matricula": "006890917",
       "senha": "123456"
     },

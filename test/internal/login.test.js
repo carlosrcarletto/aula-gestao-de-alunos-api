@@ -1,4 +1,5 @@
 import request from 'supertest';
+import 'dotenv/config';
 import app from '../../src/app.js';
 import { expect } from 'chai';
 import sinon from 'sinon';
@@ -14,8 +15,8 @@ describe('login', () => {
             .post('/api/auth/login')
             .set('Content-Type', 'application/json')
             .send({
-                email: 'admin@escola.com',
-                senha: 'admin123'
+                email: process.env.ADMIN_EMAIL,
+                senha: process.env.ADMIN_SENHA
             });
 
         expect(loginResposta.status).to.equal(500);
