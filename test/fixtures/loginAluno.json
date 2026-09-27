@@ -1,0 +1,26 @@
+[
+  {
+    "testTitle": "Deve efetuar login com o aluno cadastrado pelo admin",
+    "dadosAluno": {
+      "nome": "Fernanda Lopes",
+      "email": "fernanda.lopes@example.com",
+      "matricula": "2025101",
+      "senha": "123456"
+    },
+    "senhaDoLogin": "123456",
+    "statusCodeEsperado": 200,
+    "mensagemDeErroEsperada": null
+  },
+  {
+    "testTitle": "Não deve efetuar login com o aluno cadastrado pelo admin quando a senha estiver incorreta",
+    "dadosAluno": {
+      "nome": "Lucas Ferreira",
+      "email": "lucas.ferreira@example.com",
+      "matricula": "2025102",
+      "senha": "123456"
+    },
+    "senhaDoLogin": "senha-incorreta",
+    "statusCodeEsperado": 401,
+    "mensagemDeErroEsperada": "E-mail ou senha inválidos."
+  }
+]

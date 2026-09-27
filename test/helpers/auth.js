@@ -5,19 +5,22 @@ import 'dotenv/config';
 let tokenEmCache = null;
 export async function comTokenDeAdmin() {
     if (!tokenEmCache) {
-        const loginResposta = await api()
-            .post('/api/auth/login')
-            .set('Accept', 'application/json')
-            .send({
-                email: process.env.ADMIN_EMAIL,
-                senha: process.env.ADMIN_SENHA
-
-            });
-
-        tokenEmCache = loginResposta.body.token;
+        tokenEmCache = await getToken(process.env.ADMIN_EMAIL, process.env.ADMIN_SENHA);
     }
     return `Bearer ${tokenEmCache}`;
 
+}
+
+// Faz login com as credenciais do aluno e devolve a resposta completa do login
+// (status, token e dados do usuário logado) para o teste poder validar quem logou
+export async function loginComoAluno(emailAluno, senhaAluno) {
+    return api()
+        .post('/api/auth/login')
+        .set('Accept', 'application/json')
+        .send({
+            email: emailAluno,
+            senha: senhaAluno
+        });
 }
 
 export async function getToken(emailUser, passworUser) {
@@ -34,4 +37,3 @@ export async function getToken(emailUser, passworUser) {
     return loginResposta.body.token;
 
 }
-

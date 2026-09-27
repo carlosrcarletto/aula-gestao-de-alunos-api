@@ -2,13 +2,20 @@ name: Testes de API
 
 on:
   push:
-    branches: [main]
+    branches: ['**']
   pull_request:
     branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    # Variáveis lidas pelo Dotenv nos testes (no CI não existe arquivo .env)
+    env:
+      MONGODB_URI: mongodb://127.0.0.1:27017/gestao-de-alunos-test
+      BASE_URL: http://localhost:3000
+      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL || 'admin@escola.com' }}
+      ADMIN_SENHA: ${{ secrets.ADMIN_SENHA || 'admin123' }}
 
     services:
       mongodb:
@@ -28,13 +35,25 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Instalar dependências
         run: npm ci
 
+      # Os testes externos chamam a API pela BASE_URL, então o servidor precisa estar no ar
+      - name: Subir a API em segundo plano
+        run: |
+          npm start > api.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3000/ > /dev/null && echo "API no ar" && exit 0
+            sleep 1
+          done
+          echo "A API não subiu a tempo" && cat api.log && exit 1
+
       - name: Executar testes
         run: npm test
-        env:
-          MONGODB_URI: mongodb://127.0.0.1:27017/gestao-de-alunos-test
+
+      - name: Log da API
+        if: failure()
+        run: cat api.log

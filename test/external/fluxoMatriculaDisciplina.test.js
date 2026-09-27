@@ -3,6 +3,7 @@ import { expect } from "chai";
 import { comTokenDeAdmin } from "../helpers/auth.js";
 import { novoAluno } from "../factories/alunosFactory.js";
 import { novaDisciplina } from "../factories/disciplinasFactory.js";
+import { alunoUnico, disciplinaUnica } from "../helpers/dadosUnicos.js";
 import testesDeMatriculas from "../fixtures/matricula.json" with { type: "json" };
 
 describe("Matrícula de Aluno em Disciplina", () => {
@@ -53,12 +54,12 @@ describe("Matrícula de Aluno em Disciplina", () => {
   });
 
   testesDeMatriculas.forEach((testeDeMatricula) => {
-    it.only(testeDeMatricula.testTitle, async () => {
+    it(testeDeMatricula.testTitle, async () => {
       const cadastroAlunoResposta = await api()
         .post("/api/admin/alunos")
         .set("Content-Type", "application/json")
         .set("Authorization", await comTokenDeAdmin())
-        .send(testeDeMatricula.dadosAluno);
+        .send(alunoUnico(testeDeMatricula.dadosAluno));
 
       let alunoId = cadastroAlunoResposta.body.id;
 
@@ -66,7 +67,7 @@ describe("Matrícula de Aluno em Disciplina", () => {
         .post("/api/admin/disciplinas")
         .set("Content-Type", "application/json")
         .set("Authorization", await comTokenDeAdmin())
-        .send(testeDeMatricula.dadosDisciplina);
+        .send(disciplinaUnica(testeDeMatricula.dadosDisciplina));
 
       const disciplinaId = cadastroDisciplinaResposta.body.id;
 
@@ -85,8 +86,8 @@ describe("Matrícula de Aluno em Disciplina", () => {
         testeDeMatricula.statusCodeEsperado,
       );
 
-      // expect(cadastroMatriculaResposta.body.alunoId).to.equal(alunoId);
-      // expect(cadastroMatriculaResposta.body.disciplinaId).to.equal(disciplinaId);
+      expect(cadastroMatriculaResposta.body.alunoId).to.equal(alunoId);
+      expect(cadastroMatriculaResposta.body.disciplinaId).to.equal(disciplinaId);
     });
   });
 });
