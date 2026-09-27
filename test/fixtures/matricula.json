@@ -1,0 +1,32 @@
+[
+  {
+    "testTitle": "Validar que um aluno Wedney que acaba de ser castrado pode ser matriculado em uma nova disciplina",
+    "dadosAluno": {
+      "nome": "Wedney silvaa",
+      "email": "wedney.silvaa.8765678@exemple.com",
+      "matricula": "123456789101a",
+      "senha": "123456"
+    },
+    "dadosDisciplina": {
+      "nome": "Arquitetura de Software Distribuído",
+      "codigo": "AS12345a",
+      "cargaHoraria": 60
+    },
+    "statusCodeEsperado": 201
+  },
+  {
+    "testTitle": "Validar que um aluno adriano que acaba de ser castrado pode ser matriculado em uma nova disciplina",
+    "dadosAluno": {
+      "nome": "adriano silvaaa",
+      "email": "adriano.silvaa.8765678@exemple.com",
+      "matricula": "12345a",
+      "senha": "123456"
+    },
+    "dadosDisciplina": {
+      "nome": "Arquitetura de Software Distribuído",
+      "codigo": "AS123435a",
+      "cargaHoraria": 60
+    },
+    "statusCodeEsperado": 201
+  }
+]
